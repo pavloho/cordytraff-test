@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тестове завдання SEO LinkBuilder · CordyTraff · Павло Горін</title>
+<meta name="description" content="Рішення тестового завдання SEO LinkBuilder для CordyTraff: аналіз донорів, площадки під гест-пости, crowd-план, аутріч-лист.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#08080f">
+<link rel="icon" type="image/png" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geologica:wght@300..800&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+:root {
+  /* CordyTraff brand, converted to OKLCH */
+  --ink: oklch(0.13 0.02 285);          /* #08080f */
+  --ink-2: oklch(0.18 0.035 285);
+  --violet: oklch(0.58 0.25 288);       /* #7c4dff */
+  --violet-deep: oklch(0.47 0.23 288);
+  --violet-soft: oklch(0.94 0.035 288);
+  --violet-line: oklch(0.86 0.07 288);
+  --brand-grad: linear-gradient(115deg, #c13ae6, #7b2bee 40%, #1e7bff 80%, #29b6ff);
+
+  /* reading surface: off-white tinted toward the brand hue */
+  --bg: oklch(0.985 0.004 288);
+  --surface: oklch(1 0 0);
+  --line: oklch(0.91 0.01 288);
+  --line-2: oklch(0.84 0.015 288);
+  --text: oklch(0.21 0.025 285);
+  --text-2: oklch(0.42 0.025 285);
+  --text-3: oklch(0.52 0.02 285);
+
+  /* verdicts */
+  --take: oklch(0.5 0.13 160);
+  --take-bg: oklch(0.95 0.045 160);
+  --maybe: oklch(0.52 0.12 70);
+  --maybe-bg: oklch(0.95 0.05 85);
+  --skip: oklch(0.52 0.17 25);
+  --skip-bg: oklch(0.95 0.03 25);
+
+  --font: "Geologica", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --r: 14px;
+  --r-sm: 8px;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --z-sticky: 10;
+  --z-toast: 40;
+  --nav-w: 172px;
+  --measure: 68ch;
+  --content: 1240px;
+  --pad: clamp(20px, 4vw, 40px);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; scroll-padding-top: 24px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font: 400 1rem/1.6 var(--font);
+  font-feature-settings: "tnum" 0;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--violet-deep); text-underline-offset: 3px; text-decoration-thickness: 1px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 4px; }
+h1, h2, h3 { text-wrap: balance; margin: 0; }
+p { text-wrap: pretty; margin: 0; }
+.skip { position: absolute; left: 12px; top: -60px; background: var(--ink); color: #fff; padding: 10px 14px; border-radius: var(--r-sm); z-index: var(--z-toast); }
+.skip:focus { top: 12px; }
+
+/* ---------- masthead ---------- */
+.mast {
+  background: var(--ink); color: oklch(0.97 0.005 288);
+  position: relative; overflow: hidden;
+}
+.mast::after { /* the brand gradient as a single hairline, not decoration soup */
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px; background: var(--brand-grad);
+}
+.mast-glow {
+  position: absolute; inset: auto -10% -60% 40%; height: 120%;
+  background: radial-gradient(closest-side, oklch(0.58 0.25 288 / 0.28), transparent 70%);
+  pointer-events: none;
+}
+.mast-in { max-width: calc(var(--content) + 2 * var(--pad)); margin: 0 auto; padding: clamp(28px, 4vw, 44px) var(--pad) clamp(40px, 6vw, 72px); position: relative; }
+.brandline { display: flex; align-items: center; gap: 12px; font-weight: 600; font-size: 0.95rem; color: oklch(0.85 0.02 288); }
+.brandline img { width: 30px; height: 30px; }
+.brandline .x { color: oklch(0.6 0.03 288); font-weight: 400; }
+.mast h1 {
+  margin-top: clamp(40px, 7vw, 88px);
+  font-size: clamp(2.1rem, 1.2rem + 3.6vw, 4.2rem); line-height: 1.04; letter-spacing: -0.03em; font-weight: 750;
+  max-width: 16ch;
+}
+.mast h1 span { color: oklch(0.78 0.13 288); }
+.mast .lede { margin-top: 20px; max-width: 58ch; font-size: clamp(1rem, 0.95rem + 0.3vw, 1.15rem); line-height: 1.65; color: oklch(0.82 0.02 288); font-weight: 300; }
+.facts { display: flex; flex-wrap: wrap; gap: 10px 32px; margin: 36px 0 0; padding: 0; list-style: none; }
+.facts dt { font-size: 0.8125rem; color: oklch(0.66 0.03 288); }
+.facts dd { margin: 2px 0 0; font-weight: 500; color: oklch(0.96 0.005 288); }
+.facts dd a { color: inherit; }
+
+
+/* ---------- layout ---------- */
+.shell { max-width: calc(var(--content) + 2 * var(--pad)); margin: 0 auto; padding: 0 var(--pad); display: grid; grid-template-columns: minmax(0, 1fr); position: relative; }
+.toc { position: absolute; top: 0; bottom: 0; left: calc(100% - var(--pad) + 32px); width: var(--nav-w); z-index: var(--z-sticky); }
+.toc-in { position: sticky; top: 0; padding: 52px 0 32px; max-height: 100vh; overflow-y: auto; }
+.toc-title { font-size: 0.8125rem; color: var(--text-3); margin-bottom: 8px; padding-left: 14px; }
+.toc ol { list-style: none; margin: 0; padding: 0; position: relative; }
+.toc ol::before { content: ""; position: absolute; left: 0; top: 4px; bottom: 4px; width: 1px; background: var(--line-2); }
+.toc li a {
+  display: grid; grid-template-columns: 16px 1fr; gap: 2px; padding: 6px 0 6px 14px; text-decoration: none;
+  color: var(--text-2); font-size: 0.8125rem; line-height: 1.35; position: relative; transition: color 0.25s var(--ease);
+}
+.toc li a .n { color: var(--text-3); font-variant-numeric: tabular-nums; }
+.toc li a:hover { color: var(--text); }
+.toc li a[aria-current="true"] { color: var(--ink); font-weight: 600; }
+.toc li a[aria-current="true"] .n { color: var(--violet-deep); }
+.toc-ind {
+  position: absolute; left: -1px; width: 3px; border-radius: 3px; background: var(--violet);
+  top: 0; height: 0; transition: transform 0.45s var(--ease);
+}
+
+main { padding: 48px 0 96px; min-width: 0; }
+
+/* ---------- task sections ---------- */
+.task { padding-bottom: clamp(56px, 8vw, 96px); }
+.task + .task { padding-top: clamp(40px, 6vw, 64px); border-top: 1px solid var(--line); }
+.task-head { display: block; }
+.task-num { font-size: 0.95rem; color: var(--violet-deep); font-weight: 600; font-variant-numeric: tabular-nums; }
+.task h2 { margin-top: 6px; font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.35rem); line-height: 1.12; letter-spacing: -0.02em; font-weight: 700; color: var(--ink); max-width: 40ch; }
+
+
+.brief { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 18px 22px; }
+.brief-label { font-size: 0.95rem; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+.intro-note { margin: 0 0 48px; padding: 22px 26px; display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 18px; align-items: start; border: 1px solid var(--violet-line); border-radius: var(--r); background: var(--surface); }
+.intro-note .ico { grid-row: 1 / 3; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; background: var(--violet-soft); color: var(--violet-deep); }
+.intro-note .ico svg { width: 20px; height: 20px; }
+.intro-note .brief-label { margin: 0; padding-top: 2px; color: var(--violet-deep); font-size: 1.0625rem; }
+.intro-note p { font-size: 1.0625rem; line-height: 1.65; color: var(--text); max-width: 72ch; text-wrap: pretty; }
+@media (max-width: 640px) { .intro-note { padding: 18px; gap: 10px 12px; align-items: center; } .intro-note .ico { grid-row: auto; width: 32px; height: 32px; } .intro-note .ico svg { width: 18px; height: 18px; } .intro-note .brief-label { padding-top: 0; } .intro-note p { grid-column: 1 / -1; } }
+.brief p { color: var(--text-2); max-width: 75ch; }
+
+.method { margin-top: 12px; padding: 18px 22px; border-radius: var(--r); background: var(--violet-soft); }
+.method p { color: var(--text); max-width: 75ch; }
+.method p + p { margin-top: 0.8em; }
+.proof { grid-column: 1 / -1; margin: 4px 0 0; }
+.proof img { display: block; width: 100%; max-width: 760px; height: auto; border: 1px solid var(--line-2); border-radius: var(--r-sm); transition: border-color 0.2s; }
+.proof a:hover img { border-color: var(--violet-line); }
+.proof figcaption { margin-top: 8px; font-size: 0.8125rem; color: var(--text-3); }
+.answer { margin-top: 36px; }
+.answer > h3 { font-size: 1.25rem; font-weight: 700; color: var(--ink); margin-bottom: 12px; }
+.prose { color: var(--text); }
+.prose p { max-width: 75ch; }
+.prose p + p { margin-top: 0.9em; }
+
+/* empty state, honest about progress */
+
+/* ---------- donor list ---------- */
+.tools { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filters button {
+  font: inherit; font-size: 0.875rem; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-2);
+  background: var(--surface); color: var(--text-2); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.filters button:hover { border-color: var(--violet-line); color: var(--text); }
+.filters button[aria-pressed="true"] { background: var(--ink); color: #fff; border-color: var(--ink); }
+.filters button .c { opacity: 0.7; margin-left: 4px; font-variant-numeric: tabular-nums; }
+.legend { font-size: 0.8125rem; color: var(--text-3); }
+
+.donors { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow: clip; }
+.donors-head, .donor > summary {
+  display: grid; grid-template-columns: 30px minmax(0, 1.4fr) minmax(0, 1fr) minmax(0, 0.4fr) minmax(0, 0.75fr) minmax(0, 0.5fr) minmax(0, 0.8fr) 122px; gap: 12px; align-items: center;
+  padding: 13px 18px;
+}
+.donors-head { font-size: 0.8125rem; color: var(--text-3); border-bottom: 1px solid var(--line); background: oklch(0.975 0.005 288); }
+/* column titles stay on screen while a donor card is open and scrolled */
+.donors-head { position: sticky; top: 0; z-index: 5; box-shadow: 0 1px 0 var(--line), 0 6px 12px -8px oklch(0.2 0.03 285 / 0.25); }
+@media (max-width: 1700px) { .donors-head { top: 52px; } }
+.donor + .donor { border-top: 1px solid var(--line); }
+.donor > summary { cursor: pointer; list-style: none; transition: background 0.2s; }
+.donor > summary::-webkit-details-marker { display: none; }
+.donor > summary:hover { background: oklch(0.98 0.008 288); }
+.donor .i { color: var(--text-3); font-variant-numeric: tabular-nums; font-size: 0.875rem; }
+.donor .dom { font-weight: 500; color: var(--ink); overflow-wrap: anywhere; }
+.donor .budget { font-variant-numeric: tabular-nums; font-weight: 500; }
+.donor .budget.none { color: var(--text-3); font-weight: 400; }
+.chev { width: 18px; height: 18px; color: var(--text-3); transition: transform 0.35s var(--ease); justify-self: end; }
+.donor[open] .chev { transform: rotate(180deg); }
+.verdict { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8125rem; font-weight: 500; padding: 3px 10px; border-radius: 99px; justify-self: start; }
+.verdict[data-v="take"] { color: var(--take); background: var(--take-bg); }
+.verdict[data-v="maybe"] { color: var(--maybe); background: var(--maybe-bg); }
+.verdict[data-v="skip"] { color: var(--skip); background: var(--skip-bg); }
+.verdict[data-v="pending"] { color: var(--text-3); background: none; padding-left: 0; font-weight: 400; }
+
+.donor-body { padding: 4px 18px 22px 64px; display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 28px; }
+.donor-body .why h4, .donor-body .metrics h4 { margin: 0 0 6px; font-size: 0.8125rem; font-weight: 500; color: var(--text-3); }
+.donor-body .why p { color: var(--text); }
+.donor-body .why p + p { margin-top: 0.8em; }
+.donor-body .why h4 + p, .donor-body .why h4 + ul { margin-top: 0; }
+.donor-body .why p + h4 { margin-top: 18px; }
+.metrics .note { font-size: 0.875rem; color: var(--text-2); margin-top: 10px; max-width: 46ch; }
+.metrics dt { max-width: 40ch; }
+.evidence { margin: 0; padding-left: 18px; font-size: 0.875rem; color: var(--text-2); }
+.evidence li + li { margin-top: 4px; }
+.metrics dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 0.875rem; }
+.metrics dt { color: var(--text-2); white-space: nowrap; }
+.metrics dd { margin: 0; font-variant-numeric: tabular-nums; font-weight: 500; text-align: right; }
+.metrics a { font-size: 0.875rem; display: inline-block; margin-top: 10px; }
+.donor[hidden] { display: none; }
+.donors-empty { padding: 20px 18px; color: var(--text-2); }
+
+
+/* numbers in the summary row */
+.donors-head .r, .donor .num { text-align: right; }
+.donor .num { font-variant-numeric: tabular-nums; color: var(--text-2); font-size: 0.875rem; }
+.donor .budget { text-align: right; }
+/* open state: the row and its body read as one block */
+.donor[open] > summary { background: oklch(0.975 0.012 288); }
+.donor[open] > .donor-body { background: oklch(0.985 0.006 288); border-top: 1px solid var(--line); padding-top: 20px; }
+.donor[open] .dom { color: var(--violet-deep); }
+/* donors not analysed yet: plain muted row, nothing to open */
+.donor-empty .row { display: grid; grid-template-columns: 30px minmax(0, 1fr); gap: 12px; padding: 13px 18px; }
+.donor-empty .dom { color: var(--text-3); font-weight: 400; }
+/* metric list keeps labels on one line, price list wraps long labels */
+.metrics dl + h4 { margin-top: 18px !important; }
+.metrics .prices dt { white-space: normal; }
+.metrics .prices { grid-template-columns: minmax(0, 1fr) auto; }
+.metrics .prices dd { white-space: nowrap; }
+
+
+/* ---------- opened donor card: metrics strip → reason + prices → examples → proofs ---------- */
+.donor-body { display: block !important; padding: 18px 24px 24px 60px !important; }
+.donor-body h4 { margin: 0 0 8px !important; font-size: 0.8125rem !important; font-weight: 600 !important; color: var(--text-2) !important; letter-spacing: 0.01em; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 20px; }
+.chips > div { display: flex; align-items: baseline; gap: 8px; padding: 6px 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 99px; font-size: 0.875rem; }
+.chips dt { color: var(--text-3); }
+.chips dd { margin: 0; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.chips .dup { display: none; }
+.cols { display: block; }
+.cols.only-prices { max-width: 360px; }
+.cols.has-aside { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 32px; align-items: start; }
+.donor-body .why p { font-size: 1rem; line-height: 1.65; }
+.price-card .pc-sub { margin-top: 16px !important; padding-top: 14px; border-top: 1px solid var(--line); }
+.price-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r-sm); padding: 14px 16px; }
+.price-card .prices { margin: 0; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px 14px; font-size: 0.875rem; }
+.price-card .prices dt { color: var(--text-2); white-space: normal; }
+.price-card .prices dd { margin: 0; text-align: right; font-weight: 600; color: var(--ink); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.price-card .note { margin-top: 12px; padding-top: 10px; border-top: 1px solid var(--line); font-size: 0.8125rem; color: var(--text-2); }
+.examples { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.examples .evidence { font-size: 0.875rem; }
+.proofs { margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line); }
+.proofs-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-start; }
+.proofs .proof { margin: 0; width: 260px; }
+.proofs .proof a { display: block; }
+.proofs .proof.wide { width: 100%; max-width: 680px; }
+.proofs .proof.wide img { height: auto; }
+.proofs .proof img { display: block; width: 100%; max-width: none; height: 150px; object-fit: cover; object-position: top left; border: 1px solid var(--line-2); border-radius: var(--r-sm); background: #fff; }
+.proofs .proof a:hover img { border-color: var(--violet); }
+.proofs .proof figcaption { margin-top: 6px; font-size: 0.8125rem; line-height: 1.4; color: var(--text-3); }
+.donor-body .links { margin-top: 18px; display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 0.875rem; }
+@media (max-width: 640px) {
+  .donor-body { padding: 14px 16px 18px !important; }
+  .chips .dup { display: flex; }
+  .cols.has-aside { grid-template-columns: 1fr; gap: 18px; }
+  .proofs .proof { width: 100%; }
+}
+
+
+/* explicit "open" affordance in every analysed row */
+.more { justify-self: end; display: inline-flex; align-items: center; gap: 4px; padding: 4px 8px 4px 12px; border-radius: 99px; border: 1px solid var(--line-2); background: var(--surface); font-size: 0.8125rem; font-weight: 500; color: var(--violet-deep); white-space: nowrap; transition: background 0.2s, border-color 0.2s; }
+.more .chev { width: 16px; height: 16px; color: currentColor; }
+.more-c { display: none; }
+.donor[open] .more-o { display: none; }
+.donor[open] .more-c { display: inline; }
+.donor > summary:hover .more { background: var(--violet-soft); border-color: var(--violet-line); }
+.donor[open] .more { background: var(--violet-soft); border-color: var(--violet-line); }
+.tools-r { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.expand-all { font: inherit; font-size: 0.875rem; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line-2); background: var(--surface); color: var(--text); cursor: pointer; transition: border-color 0.2s, background 0.2s; }
+.expand-all:hover { border-color: var(--violet-line); background: var(--violet-soft); }
+@media (max-width: 640px) {
+  .more { padding: 4px; border: 0; background: none !important; }
+  .more-o, .more-c { display: none !important; }
+}
+
+
+/* ---------- task 2: guest post sites table ---------- */
+.gp-wrap { margin-top: 24px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow-x: auto; }
+.gp-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 1100px; table-layout: fixed; }
+.gp-table col.c-site { width: 13%; } .gp-table col.c-num { width: 6%; } .gp-table col.c-org { width: 9%; } .gp-table col.c-why { width: 20%; } .gp-table col.c-proof { width: 20%; } .gp-table col.c-ex { width: 20%; }
+.gp-table th, .gp-table td { padding: 12px 14px; text-align: left; vertical-align: top; border-top: 1px solid var(--line); }
+.gp-table thead th { border-top: 0; background: oklch(0.975 0.005 288); font-size: 0.8125rem; font-weight: 500; color: var(--text-3); white-space: nowrap; }
+.gp-table tbody th { font-weight: 500; overflow-wrap: anywhere; }
+.gp-table tbody th a { color: var(--ink); text-decoration: none; }
+.gp-table tbody th a:hover { color: var(--violet-deep); text-decoration: underline; }
+.gp-table .r { text-align: right; font-variant-numeric: tabular-nums; }
+.gp-table .nowrap { white-space: nowrap; }
+.gp-table td { color: var(--text-2); overflow-wrap: anywhere; }
+.gp-table td.r { color: var(--text); }
+.gp-table ul { margin: 0; padding-left: 16px; }
+.gp-table li + li { margin-top: 4px; }
+.gp-table code { white-space: nowrap; font-size: 0.8125rem; background: oklch(0.96 0.01 288); padding: 1px 4px; border-radius: 4px; }
+/* readability: roomier cells, clear row separation, metrics set apart from text */
+.gp-table { font-size: 0.875rem; }
+.gp-table th, .gp-table td { padding: 16px 14px; line-height: 1.55; }
+.gp-table th.r, .gp-table td.r { padding-left: 10px; padding-right: 10px; white-space: nowrap; }
+.gp-table thead th { padding: 12px 16px; background: oklch(0.955 0.012 288); color: var(--text-2); font-weight: 600; border-bottom: 1px solid var(--line-2); }
+.gp-table tbody th, .gp-table tbody td { border-top: 1px solid var(--line-2); }
+.gp-table tbody tr:nth-child(even) > * { background: oklch(0.982 0.007 288); }
+.gp-table tbody tr:hover > * { background: var(--violet-soft); }
+.gp-table tbody th { font-size: 1rem; font-weight: 600; }
+.gp-table td { color: var(--text); }
+.gp-table td.r { font-size: 0.95rem; font-weight: 600; }
+.gp-table :is(th, td):nth-child(n+5) { border-left: 1px solid var(--line); }
+.gp-table li + li { margin-top: 10px; }
+/* narrow window: rows become cards, so there is no sideways-scrolling box to trap page scroll */
+@media (max-width: 900px) {
+  .gp-wrap { overflow: visible; border: 0; background: none; }
+  .gp-table, .gp-table tbody, .gp-table tr, .gp-table th, .gp-table td { display: block; width: auto; min-width: 0; }
+  .gp-table colgroup, .gp-table thead { display: none; }
+  .gp-table tr { margin-bottom: 14px; border: 1px solid var(--line-2); border-radius: var(--r); background: var(--surface); padding: 6px 0 10px; }
+  .gp-table tbody th, .gp-table tbody td { border: 0 !important; background: none !important; padding: 6px 16px; }
+  .gp-table tbody th { font-size: 1.0625rem; padding-top: 12px; }
+  .gp-table td.r { display: inline-block; padding-right: 4px; text-align: left; }
+  .gp-table td::before { display: block; margin-bottom: 2px; font-size: 0.8125rem; font-weight: 500; color: var(--text-3); }
+  .gp-table td.r::before { display: inline; margin: 0 6px 0 0; }
+  .gp-table td:nth-child(2)::before { content: "DR"; }
+  .gp-table td:nth-child(3)::before { content: "AS"; }
+  .gp-table td:nth-child(4)::before { content: "Органіка US"; }
+  .gp-table td:nth-child(5)::before { content: "США, %"; }
+  .gp-table td:nth-child(6)::before { content: "Чому підходить"; }
+  .gp-table td:nth-child(7)::before { content: "Підтвердження"; }
+  .gp-table td:nth-child(8)::before { content: "Приклади постів"; }
+}
+.gp-note { margin-top: 10px; font-size: 0.8125rem; color: var(--text-3); }
+
+/* ---------- task 3: crowd plan tables ---------- */
+.answer > h3 ~ h3 { margin-top: 40px; }
+.cr-table th a { overflow-wrap: anywhere; }
+.cr-wrap { border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); overflow-x: auto; }
+.cr-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; min-width: 620px; }
+.cr-table th, .cr-table td { padding: 13px 16px; text-align: left; vertical-align: top; line-height: 1.55; border-top: 1px solid var(--line-2); }
+.cr-table thead th { border-top: 0; background: oklch(0.955 0.012 288); color: var(--text-2); font-weight: 600; font-size: 0.8125rem; white-space: nowrap; }
+.cr-table tbody tr:nth-child(even) > * { background: oklch(0.982 0.007 288); }
+.cr-table tbody th { font-weight: 600; color: var(--ink); }
+.cr-table .r { text-align: right; white-space: nowrap; font-variant-numeric: tabular-nums; font-weight: 600; }
+.cr-table td { color: var(--text); }
+.cr-table td.soft { color: var(--text-2); }
+.cr-table a { color: inherit; text-decoration: none; }
+.cr-table a:hover { color: var(--violet-deep); text-decoration: underline; }
+.cr-list { margin: 0; padding-left: 20px; color: var(--text); max-width: 75ch; }
+.cr-list li + li { margin-top: 10px; }
+
+/* ---------- outreach letter ---------- */
+.letter { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.letter-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; padding: 16px 18px 16px 28px; border-bottom: 1px solid var(--line); background: oklch(0.985 0.005 288); }
+.letter-meta { display: grid; grid-template-columns: auto 1fr; gap: 6px 14px; font-size: 0.875rem; margin: 0; }
+.letter-meta dt { color: var(--text-2); }
+.letter-meta dd { margin: 0; color: var(--ink); }
+.letter-meta dd.subj { font-weight: 600; }
+.letter-body { padding: 28px 28px 32px; font-size: 1rem; line-height: 1.7; color: var(--ink); max-width: 66ch; }
+.letter-body p { margin: 0; }
+.letter-body p + p, .letter-body p + ul, .letter-body ul + p { margin-top: 1.05em; }
+.letter-body ul { margin: 0.5em 0 0; padding-left: 1.3em; }
+.letter-body li + li { margin-top: 0.3em; }
+.letter-body li::marker { color: var(--violet); }
+.letter-body .letter-sign { margin-top: 1.6em; color: var(--text-2); }
+.btn {
+  font: inherit; font-size: 0.875rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px;
+  padding: 7px 12px; border-radius: var(--r-sm); border: 1px solid var(--line-2); background: var(--surface); color: var(--text); cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn:hover { border-color: var(--violet-line); background: var(--violet-soft); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn svg { width: 15px; height: 15px; }
+
+.toast {
+  position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 16px); opacity: 0;
+  background: var(--ink); color: #fff; padding: 10px 16px; border-radius: 10px; font-size: 0.875rem; z-index: var(--z-toast);
+  transition: opacity 0.3s var(--ease), transform 0.3s var(--ease); pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+footer { border-top: 1px solid var(--line); }
+footer .in { max-width: calc(var(--content) + 2 * var(--pad)); margin: 0 auto; padding: 28px var(--pad); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; font-size: 0.875rem; color: var(--text-3); }
+
+/* ---------- motion ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); filter: blur(4px); } to { opacity: 1; transform: none; filter: none; } }
+.mast-in > * { animation: rise 0.9s var(--ease) both; }
+.mast-in > :nth-child(2) { animation-delay: 0.08s; }
+.mast-in > :nth-child(3) { animation-delay: 0.16s; }
+.mast-in > :nth-child(4) { animation-delay: 0.24s; }
+.mast-in > :nth-child(5) { animation-delay: 0.32s; }
+.mast-in > :nth-child(6) { animation-delay: 0.4s; }
+@keyframes fill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.donor[open] .donor-body { animation: open 0.4s var(--ease); }
+@keyframes open { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ---------- responsive ---------- */
+/* no room in the margin: the TOC becomes a sticky strip above the content */
+@media (max-width: 1700px) {
+  .shell { grid-template-columns: 1fr; gap: 0; }
+  .toc-in { position: static; padding: 0; max-height: none; overflow: visible; }
+  .toc {
+    left: auto; width: auto; bottom: auto; position: sticky; top: 0; max-height: none; padding: 10px 0; margin: 0 calc(-1 * var(--pad));
+    padding-inline: var(--pad); background: oklch(0.985 0.004 288 / 0.92); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line); overflow-x: auto; scrollbar-width: none;
+  }
+  .toc::-webkit-scrollbar { display: none; }
+  .toc-title, .toc ol::before, .toc-ind { display: none; }
+  .toc ol { display: flex; gap: 6px; width: max-content; }
+  .toc li a { display: flex; gap: 6px; padding: 7px 12px; font-size: 0.875rem; border-radius: 99px; white-space: nowrap; }
+  .toc li a[aria-current="true"] { background: var(--ink); color: #fff; }
+  .toc li a[aria-current="true"] .n { color: oklch(0.8 0.1 288); }
+  html { scroll-padding-top: 72px; }
+  main { padding-top: 32px; }
+}
+@media (max-width: 640px) {
+  .btn, .expand-all, .filters button, .toc li a { min-height: 44px; }
+  .cr-table { min-width: 0; font-size: 0.875rem; }
+  .cr-table th, .cr-table td { padding: 11px 12px; }
+  .donors-head { display: none; }
+  .donor > summary { grid-template-columns: 26px minmax(0, 1fr) auto 20px; row-gap: 6px; }
+  .donors-head .r, .donor .num { display: none; }
+  .donor .budget { text-align: left; }
+  .donor .budget.none { display: none; }
+  .donor-empty .row { grid-template-columns: 26px minmax(0, 1fr); }
+  .donor .budget { grid-column: 2 / 4; grid-row: 2; font-size: 0.875rem; }
+  .donor .budget::before { content: "Бюджет: "; color: var(--text-3); font-weight: 400; }
+  .donor-body { grid-template-columns: 1fr; padding-left: 18px; gap: 18px; }
+  .letter-head { flex-wrap: wrap; }
+}
+@media print {
+  .toc, .filters, .btn, .skip, .mast-glow { display: none !important; }
+  .shell { display: block; }
+  .mast { background: #fff; color: #000; }
+  details.donor > .donor-body { display: grid; }
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#content">Перейти до змісту</a>
+
+<header class="mast">
+  <div class="mast-glow" aria-hidden="true"></div>
+  <div class="mast-in">
+    <div class="brandline">
+      <img src="assets/logo.png" alt="" width="30" height="30">
+      <span>CordyTraff</span><span class="x">×</span><span>Павло Горін</span>
+    </div>
+    <h1>Тестове завдання <span>SEO LinkBuilder</span></h1>
+    <p class="lede">Аналіз донорів під AI adult, площадки для гест-постів на dreamgirlai.chat, план крауд-лінкбілдингу для нового сайту і приклад аутріч-листа.</p>
+    <dl class="facts">
+      <div><dt>Кандидат</dt><dd>Павло Горін</dd></div>
+      <div><dt>Дата</dt><dd>Листопад 2026</dd></div>
+    </dl>
+  </div>
+</header>
+
+<div class="shell">
+  <nav class="toc" aria-label="Зміст">
+    <div class="toc-in">
+      <div class="toc-title">Зміст</div>
+      <ol id="toc-list"></ol>
+      <span class="toc-ind" aria-hidden="true"></span>
+    </div>
+  </nav>
+
+  <main id="content">
+
+    <div class="intro-note" role="note">
+      <span class="ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v5"/><path d="M12 8h.01"/></svg></span>
+      <div class="brief-label">Перш ніж читати</div>
+      <p>Більшість метрик у цьому тестовому я брав із Semrush. Платного доступу до Ahrefs у мене немає, тому DR дивився в його безкоштовному Website Authority Checker. Зі Semrush я працював уперше, тож десь можуть бути неточності. Щоб їх було менше, дані перевіряв усіма доступними способами: у Google, на самих сайтах, у Collaborator і в листуванні з власниками сайтів.</p>
+    </div>
+
+    <!-- ============ 1. Donors ============ -->
+    <section class="task" id="donors" data-sub="10 сайтів, вердикт і бюджет" data-title="Аналіз донорів">
+      <div class="task-head">
+        <div>
+          <div class="task-num">Завдання 1</div>
+          <h2>Аналіз сайтів під аутріч</h2>
+        </div>
+      </div>
+      <div class="brief">
+        <div class="brief-label">Умова</div>
+        <p>Проаналізувати сайти під аутріч (тематика просування: AI adult). Дати короткий фідбек по своєму вердикту (чому взяли б або навпаки) і який максимальний бюджет виділили б на обраний сайт.</p>
+      </div>
+      <div class="method">
+        <div class="brief-label">Як я рахував бюджет</div>
+        <p>Щоб бюджет спирався на реальні цифри, а не на мої здогадки, я написав усім десяти донорам. Питав, скільки коштує гест-пост і вставка посилання, який тип лінка і як їм зручніше отримати оплату. Де ціна вже висіла на сайті чи на біржі, брав її звідти. Відповіді донорів додаю скриншотами в картку сайту, щоб було видно, звідки цифра.</p>
+      </div>
+
+      <div class="answer">
+        <div class="tools">
+          <div class="filters" role="group" aria-label="Фільтр за вердиктом" id="filters" hidden>
+            <button type="button" data-f="all" aria-pressed="true">Усі<span class="c"></span></button>
+            <button type="button" data-f="take" aria-pressed="false">Беру<span class="c"></span></button>
+            <button type="button" data-f="maybe" aria-pressed="false">Під питанням<span class="c"></span></button>
+            <button type="button" data-f="skip" aria-pressed="false">Не беру<span class="c"></span></button>
+          </div>
+          <div class="tools-r"><span class="legend">Натисніть на рядок, щоб побачити аргументацію, ціни і докази</span><button type="button" class="expand-all" id="expand-all" aria-pressed="false">Розгорнути всі</button></div>
+        </div>
+
+        <div class="donors" id="donors-list">
+          <div class="donors-head" aria-hidden="true"><span>#</span><span>Сайт</span><span>Вердикт</span><span class="r">DR</span><span class="r">Органіка</span><span class="r">США</span><span class="r">Макс. бюджет</span><span></span></div>
+          <!-- Each donor: set data-v to take | maybe | skip | pending -->
+          <details class="donor" data-v="take" data-domain="gigwise.com" data-dr="71" data-traffic="103.4K" data-us="58%" data-budget="до $250">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>103.4K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>58%</dd></div><div><dt>DR</dt><dd>71</dd></div><div><dt>Authority Score</dt><dd>43</dd></div><div><dt>Ref. domains</dt><dd>25.7K</dd></div><div><dt>Ніша</dt><dd>Celebrity News, Music</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Тематично gigwise від нас далекий: celebrity-новини й тексти пісень. Але сайт живий, трафік іде на тисячі внутрішніх сторінок, а пости про AI girlfriend тут уже стоять, з dofollow-посиланнями та в індексі.</p>
+                
+                <p>На Collaborator розміщення коштує $199, за особливу тематику доплата $100, і ще $50, якщо текст пишуть вони. Для нашої ніші це $299, але напряму через редакцію зазвичай виходить дешевше, тому моя стеля $250.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices">
+                  <dt>Guest post</dt><dd>$199</dd>
+                  <dt>Особлива тематика</dt><dd>+$100</dd>
+                  <dt>Написання тексту</dt><dd>+$50</dd>
+                </dl><p class="note">Ціна з біржі Collaborator.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://www.gigwise.com/best-ai-sexual-chat-and-virtual-girlfriend-apps/" rel="noopener nofollow" target="_blank">Best AI Sexual Chat and Virtual Girlfriend Apps</a></li>
+                  <li><a href="https://www.gigwise.com/ai-girlfriend-video-chat-why-companion-apps-are-moving-from-text-to-face-to-face/" rel="noopener nofollow" target="_blank">AI Girlfriend Video Chat</a> (dofollow на xeve.ai з анкором «AI girlfriend video chat»)</li>
+                  <li><a href="https://www.gigwise.com/secrets-ai-review-pros-cons-of-this-ai-nude-chat-platform/" rel="noopener nofollow" target="_blank">Secrets AI Review</a> (жовтень 2026, позначено як press release)</li>
+                </ul></div>
+              
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof wide">
+                <a href="assets/replies/gigwise-collaborator.jpg" target="_blank" rel="noopener"><img width="2242" height="648" src="assets/replies/gigwise-collaborator.jpg" alt="Collaborator, gigwise.com: розміщення 199 USD, написання тексту +50 USD" loading="lazy"></a>
+                <figcaption>Collaborator, картка gigwise.com, 23.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://gigwise.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="skip" data-domain="thodex.com" data-dr="37" data-traffic="501" data-us="65%" data-budget="до $20">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>501/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>65%</dd></div><div><dt>DR</dt><dd>37</dd></div><div><dt>Authority Score</dt><dd>25</dd></div><div><dt>Ref. domains</dt><dd>4.2K</dd></div><div><dt>Ніша</dt><dd>Cybersecurity News</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Трафіку в донора мало, і весь останній рік він падає. Те, що лишилось, тримається майже на одній сторінці про шахрайство з prizechecker: якщо вона просяде, у сайту не залишиться нічого.</p>
+                <p>Гест-пости тут беруть відкрито, нашу нішу вже публікували, а більшість трафіку зі США. Але вага домену зараз не та, щоб за неї платити.</p>
+                <p>На Collaborator за розміщення тут просять $200, плюс $20, якщо текст пишуть вони. Для домену з таким трафіком це дуже дорого, більше $20 я б не дав. Редакції я теж написав через форму на сайті, відповіді поки немає.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices"><dt>Guest post</dt><dd>$200</dd><dt>Написання тексту</dt><dd>+$20</dd></dl><p class="note">Ціна з біржі Collaborator.</p></aside>
+                
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://www.thodex.com/pephop-ai-redefining-ai-conversations-with-no-limits/" rel="noopener nofollow" target="_blank">Pephop.ai: Redefining AI Conversations with No Limits</a></li>
+                  <li><a href="https://www.thodex.com/why-choose-nectar-ai-as-your-ai-companion-generator/" rel="noopener nofollow" target="_blank">Why Choose Nectar AI As Your AI Companion Generator?</a></li>
+                  <li><a href="https://www.thodex.com/is-candy-ai-the-future-of-virtual-friendship-a-sweet-dive-into-candy-ai/" rel="noopener nofollow" target="_blank">Is Candy AI the Future of Virtual Friendship?</a></li>
+                </ul></div>
+              
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof wide">
+                <a href="assets/replies/thodex-collaborator.jpg" target="_blank" rel="noopener"><img width="2120" height="268" src="assets/replies/thodex-collaborator.jpg" alt="Collaborator, thodex.com: розміщення 200 USD, написання тексту +20 USD" loading="lazy"></a>
+                <figcaption>Collaborator, картка thodex.com, 23.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://thodex.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a><a href="https://www.thodex.com/advertise/" rel="noopener nofollow" target="_blank">Сторінка реклами</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="take" data-domain="nerdbot.com" data-dr="71" data-traffic="16.1K" data-us="36%" data-budget="до $60">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>16.1K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>36%</dd></div><div><dt>DR</dt><dd>71</dd></div><div><dt>Authority Score</dt><dd>39</dd></div><div><dt>Ref. domains</dt><dd>23.3K</dd></div><div><dt>Ніша</dt><dd>Entertainment / Pop Culture</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Nerdbot пише про кіно, ігри й поп-культуру, але нашу нішу тут публікують відкрито: є пости про AI girlfriends, огляди AI-чатів і порівняння Replika з Nomi. В одній зі статей стоять три dofollow-посилання на crushon.ai з анкорами на кшталт «NSFW AI».</p>
+                <p>Мінус у гео: США на першому місці, але це трохи більше третини трафіку, решта йде з Індії, Великої Британії та інших країн. І трафік скаче: останній ріст дали дві свіжі статті.</p>
+                <p>Сайт є в моїй базі донорів, розміщення там коштує $50. Що нашу нішу тут беруть, видно з постів вище, але ціна в базі вказана без уточнення тематики, а за sensitive донори часто просять більше. Тому я написав редакції, щоб дізнатися, чи відрізняється ціна саме для нашої ніші. На лист поки не відповіли, я надіслав фоллоуап. Від ціни з бази моя стеля $60.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices"><dt>Guest post</dt><dd>$50</dd></dl><p class="note">Ціна з моєї бази донорів, для звичайної тематики. Редакція на лист поки не відповіла, надіслано фоллоуап.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://nerdbot.com/2025/04/10/whats-the-deal-with-ai-girlfriends-these-days/" rel="noopener nofollow" target="_blank">What's the Deal with AI Girlfriends These Days?</a> (квітень 2025, три dofollow на crushon.ai)</li>
+                  <li><a href="https://nerdbot.com/2024/10/15/a-day-in-the-life-with-an-ai-girlfriend-virtual-love-in-action/" rel="noopener nofollow" target="_blank">A Day in the Life with an AI Girlfriend</a> (жовтень 2024)</li>
+                  <li><a href="https://nerdbot.com/2024/05/27/the-evolution-of-digital-companionship-ai-girlfriends-and-beyond/" rel="noopener nofollow" target="_blank">The Evolution of Digital Companionship: AI Girlfriends and Beyond</a> (травень 2024)</li>
+                </ul></div>
+              <p class="links"><a href="https://nerdbot.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="skip" data-domain="disquantified.org" data-dr="62" data-traffic="3.5K" data-us="66%" data-budget="$0">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>3.5K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>66%</dd></div><div><dt>DR</dt><dd>62</dd></div><div><dt>Authority Score</dt><dd>32</dd></div><div><dt>Ref. domains</dt><dd>2.9K</dd></div><div><dt>Ніша</dt><dd>Multi-topic Blog</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Сайту немає в індексі Google. Запит site:disquantified.org не знаходить жодної сторінки, і донор сам написав мені в листі, що їхні сайти не індексуються, а розміщення продаються «для видимості в AI». Посилання зі сторінки, якої Google не бачить, ваги нашому проєкту не передасть, тому ціна тут ролі не грає.</p>
+                <p>Semrush досі показує кілька тисяч візитів на місяць, але Google сторінок сайту не знаходить, тож ці цифри вже не актуальні.</p>
+                <p>Тому мій бюджет тут $0: навіть за $40 посилання зі сторінки поза індексом нічого не дасть. Інша справа, якби задачею була поява бренду у відповідях AI-сервісів. Під це вони свої розміщення і продають, тож за $40 можна спробувати, але цитування в AI вони самі не гарантують.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices">
+                  <dt>Guest post з посиланням</dt><dd>$40</dd>
+                  <dt>Згадка бренду без посилання</dt><dd>$20</dd>
+                </dl><p class="note">Відповідь на мій лист, 20.11.2026.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://disquantified.org/ideal-nsfw-ai-chat-bots-which-platform-suits-your-desires/" rel="noopener nofollow" target="_blank">Ideal NSFW AI Chat Bots</a></li>
+                  <li><a href="https://disquantified.org/ai-girlfriend-platform-uncensy-announces-four-new-features-for-the-summer-of-2026/" rel="noopener nofollow" target="_blank">AI Girlfriend Platform Uncensy Announces Four New Features</a> (2026)</li>
+                </ul></div>
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof">
+                <a href="assets/replies/disquantified-google.jpg" target="_blank" rel="noopener"><img src="assets/replies/disquantified-google.jpg" alt="Google за запитом site:disquantified.org не знаходить жодного документа" loading="lazy" width="890" height="280"></a>
+                <figcaption>Google, запит site:disquantified.org, 20.11.2026: жодної сторінки в індексі.</figcaption>
+              </figure><figure class="proof">
+                <a href="assets/replies/disquantified.jpg" target="_blank" rel="noopener"><img src="assets/replies/disquantified.jpg" alt="Скриншот відповіді disquantified.org: guest post $40, brand mention $20, сайти не індексуються Google" loading="lazy" width="1400" height="554"></a>
+                <figcaption>Відповідь донора на мій лист, 20.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://disquantified.org" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="skip" data-domain="psbios.com" data-dr="59" data-traffic="824" data-us="27%" data-budget="до $20">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>824/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>27%</dd></div><div><dt>DR</dt><dd>59</dd></div><div><dt>Authority Score</dt><dd>28</dd></div><div><dt>Ref. domains</dt><dd>15.3K</dd></div><div><dt>Ніша</dt><dd>PS2 BIOS / Emulators</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>PSBios живе з одного запиту: майже весь трафік зі США йде на головну, де люди шукають, як скачати BIOS для PS2. Усі інші сторінки разом, зокрема гостьові статті, дають лише кілька візитів.</p>
+                <p>Гео теж не наше: на першому місці Бразилія, США тільки друга. А в липні–серпні кількість ключових слів обвалилася в кілька разів і так і не повернулась.</p>
+                <p>Нашу нішу тут публікують, і на Collaborator розміщення коштує $80, плюс $15, якщо текст пишуть вони. Але більше $20 я б за такий сайт не дав. Редакції я теж написав, на лист поки не відповіли, надіслав фоллоуап.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices"><dt>Guest post</dt><dd>$80</dd><dt>Написання тексту</dt><dd>+$15</dd></dl><p class="note">Ціна з біржі Collaborator.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://psbios.com/nsfw-chatbot-development-building-personalized-ai-companions/" rel="noopener nofollow" target="_blank">NSFW Chatbot Development: Building Personalized AI Companions</a> (клон Candy AI)</li>
+                  <li><a href="https://psbios.com/explore-the-5-best-face-swap-tools-to-use-in-2025/" rel="noopener nofollow" target="_blank">Explore the 5 Best Face Swap Tools to Use in 2025</a> (face swap з NSFW)</li>
+                </ul></div>
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof wide">
+                <a href="assets/replies/psbios-collaborator.jpg" target="_blank" rel="noopener"><img width="2110" height="276" src="assets/replies/psbios-collaborator.jpg" alt="Collaborator, psbios.com: розміщення 80 USD, написання тексту +15 USD" loading="lazy"></a>
+                <figcaption>Collaborator, картка psbios.com, 23.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://psbios.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="take" data-domain="geekextreme.com" data-dr="44" data-traffic="10.9K" data-us="92%" data-budget="до $230">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>10.9K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>92%</dd></div><div><dt>DR</dt><dd>44</dd></div><div><dt>Authority Score</dt><dd>36</dd></div><div><dt>Ref. domains</dt><dd>5.3K</dd></div><div><dt>Ніша</dt><dd>Geek Culture / Gaming / Tech</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>GeekExtreme пише про ігри, техніку й гік-культуру з 2000 року, і майже весь його трафік зі США. Домен старий і сильний, тож за вагою це один з найкращих донорів у списку.</p>
+                <p>Нашу нішу тут публікують регулярно, хоч здебільшого в нейтральній подачі: огляди AI girlfriend-апок, порівняння пам'яті й голосу. Є і пряма стаття про uncensored AI-компаньйонів з посиланнями на Candy.ai, тож тема їх не відлякує, але наш текст треба буде писати в їхньому тоні.</p>
+                <p>Мінус у тому, що майже весь трафік брендовий і йде на головну.</p>
+                <p>На Collaborator стаття коштує $175, за особливу тематику доплата $100, і ще $25, якщо текст пишуть вони. Для нашої ніші це $275, але напряму через редакцію зазвичай виходить дешевше, тому моя стеля $230. Редакції я написав, відповіді поки немає, надіслав фоллоуап.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices"><dt>Стаття</dt><dd>$175</dd><dt>Особлива тематика</dt><dd>+$100</dd><dt>Написання тексту</dt><dd>+$25</dd></dl><p class="note">Ціна з біржі Collaborator. Серед особливих тематик дозволені азартні ігри, кредити, форекс і сайти знайомств.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://www.geekextreme.com/the-best-popular-ai-companions-uncensored-in-2026/" rel="noopener nofollow" target="_blank">The Best &amp; Popular AI Companions Uncensored In 2026</a> (лютий 2026, dofollow на Candy.ai через партнерське посилання)</li>
+                  <li><a href="https://www.geekextreme.com/free-ai-girlfriend-apps-tested/" rel="noopener nofollow" target="_blank">Free AI Girlfriend Apps: We Tested 5 Free Tiers</a> (вересень 2026, dofollow на hakko.ai і nastia.ai)</li>
+                  <li><a href="https://www.geekextreme.com/ai-girlfriend-app-with-pictures/" rel="noopener nofollow" target="_blank">AI Girlfriend App With Pictures: What Each Image Really Costs</a> (вересень 2026)</li>
+                  <li><a href="https://www.geekextreme.com/ai-girlfriend-with-voice-tested/" rel="noopener nofollow" target="_blank">AI Girlfriend With Voice: 9 Apps Tested</a></li>
+                </ul></div>
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof wide">
+                <a href="assets/replies/geekextreme-collaborator.jpg" target="_blank" rel="noopener"><img width="2166" height="694" src="assets/replies/geekextreme-collaborator.jpg" alt="Collaborator, geekextreme.com: стаття 175 USD, особлива тематика +100 USD, написання +25 USD, дозволені особливі тематики" loading="lazy"></a>
+                <figcaption>Collaborator, картка geekextreme.com, 23.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://www.geekextreme.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="skip" data-domain="vitamagazine.com" data-dr="68" data-traffic="1.6K" data-us="35%" data-budget="до $60">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>1.6K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>35%</dd></div><div><dt>DR</dt><dd>68</dd></div><div><dt>Authority Score</dt><dd>30</dd></div><div><dt>Ref. domains</dt><dd>6.9K</dd></div><div><dt>Ніша</dt><dd>Lifestyle Magazine</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Канадський lifestyle-журнал з друкованою версією. Але трафіку зі США в нього мало, і за останній рік загальний трафік сайту падає, а ціни лишились як для живого медіа.</p>
+                <p>Торгуватися вони не готові, на сторінці прямо написано «Rates are firm». Для мене цей сайт вартий до $60, а для нашої ніші вони просять $800, тож шукати компроміс тут немає сенсу.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices">
+                  <dt>Пост напряму про adult, casino, crypto тощо</dt><dd>$800</dd>
+                  <dt>Lifestyle-пост з посиланням на casino, crypto, betting (adult не входить)</dt><dd>$400</dd>
+                  <dt>Link insertion / niche edit</dt><dd>$200</dd>
+                </dl><p class="note">Офіційний прайс на сайті. Ціни фіксовані, dofollow назавжди, оплата тільки PayPal.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://vitamagazine.com/2026/10/21/how-to-choose-an-ai-romance-companion-that-fits/" rel="noopener nofollow" target="_blank">How to Choose an AI Romance Companion That Fits</a> (жовтень 2026, SFW)</li>
+                  <li><a href="https://vitamagazine.com/2026/04/25/best-escort-sites-in-2026-comparing-rosey-link-tryst-eros-slixa-and-listcrawler/" rel="noopener nofollow" target="_blank">Best Escort Sites in 2026</a> (квітень 2026, топ-сторінка в США)</li>
+                  <li><a href="https://vitamagazine.com/2024/06/12/advanced-payment-solutions-the-role-of-fintech-in-online-casino-operations/" rel="noopener nofollow" target="_blank">Fintech in Online Casino Operations</a> (dofollow на vulkanvegas.com)</li>
+                </ul></div>
+              
+              <p class="links"><a href="https://vitamagazine.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a><a href="https://vitamagazine.com/advertising/" rel="noopener nofollow" target="_blank">Прайс на сайті</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="take" data-domain="hentaipulse.com" data-dr="39" data-traffic="7.5K" data-us="37%" data-budget="до $120">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>7.5K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>37%</dd></div><div><dt>DR</dt><dd>39</dd></div><div><dt>Authority Score</dt><dd>31</dd></div><div><dt>Ref. domains</dt><dd>3.4K</dd></div><div><dt>Ніша</dt><dd>Adult / Hentai Streaming</dd></div></dl>
+              <div class="cols">
+                <div class="why"><h4>Чому</h4><p>Hentaipulse сам є adult-сайтом: стрімінг хентаю плюс блог, де вже стоять огляди AI-чатів. Для них наша ніша звичайна тематика, а посилання буде поруч із прямими конкурентами: в одному лістингу понад десять dofollow на candy.ai, crushon.ai і spicychat.ai. Серед донорів, яких я беру, це єдиний adult-сайт, решта мейнстрім, тож профіль посилань лишиться збалансованим.</p>
+                <p>США на першому місці, хоч це трохи більше третини трафіку, і з літа сайт швидко росте. Але ріст дають сотні однотипних сторінок про OnlyFans-моделей, а такий шаблонний контент Google іноді ріже апдейтами.</p>
+                <p>Ціни немає ні на сайті, ні на Collaborator, ні на SEOClerks, тож розміщення тут, схоже, продають тільки напряму. Редакції я написав, відповіді поки немає, надіслав фоллоуап. Доплати за тематику тут бути не повинно, бо це їхня основна ніша, тому моя стеля $120.</p></div>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://hentaipulse.com/blog/best-hentai-ai-chat-apps/" rel="noopener nofollow" target="_blank">Best Hentai AI Chat Apps</a> (понад 10 dofollow на candy.ai, crushon.ai, spicychat.ai та інші)</li>
+                  <li><a href="https://hentaipulse.com/blog/ai-girlfriend-without-sign-up/" rel="noopener nofollow" target="_blank">AI Girlfriend Without Sign Up (2026): Free Chat Guide</a> (dofollow на topaigirlfriend.co.uk)</li>
+                  <li><a href="https://hentaipulse.com/blog/what-is-an-ai-hentai-how-to-choose-the-best-hentai-ai-chat/" rel="noopener nofollow" target="_blank">What Is an AI Hentai &amp; How to Choose the Best Hentai AI Chat</a></li>
+                  <li><a href="https://hentaipulse.com/blog/flirtatlas-ai-rankings-and-reviews-your-go-to-spot-for-the-hottest-ai-girlfriends/" rel="noopener nofollow" target="_blank">FlirtAtlas AI Rankings and Reviews</a> (огляд одного бренду з dofollow на нього)</li>
+                </ul></div>
+              <p class="links"><a href="https://hentaipulse.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="take" data-domain="kickassfacts.com" data-dr="56" data-traffic="3.7K" data-us="63%" data-budget="до $250">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>3.7K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>63%</dd></div><div><dt>DR</dt><dd>56</dd></div><div><dt>Authority Score</dt><dd>33</dd></div><div><dt>Ref. domains</dt><dd>7.2K</dd></div><div><dt>Ніша</dt><dd>Trivia / Facts Blog</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>Kickassfacts пише цікаві факти про тварин, історію й відомих людей, тобто тематично від нас далеко. Але сайт живий: трафік розкиданий по сотнях статей, а не тримається на одній сторінці, і більша його частина йде зі США.</p>
+                <p>Нашу нішу тут уже пропускали: у статті про frame generation стоїть dofollow-посилання на Candy AI. Гостьові пости про онлайн-казино тут теж публікують, останній вийшов кілька місяців тому.</p>
+                <p>За sensitive-нішу вони просять $280, за звичайну тематику $80. Спершу спробую поторгуватися або запропоную статтю на тему, яка їм ближча, з нашим анкором всередині, щоб зайти дешевше. Моя стеля $250: це трохи нижче їхньої ціни, і на такій різниці зазвичай можна домовитися.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices"><dt>Sponsored post, загальна тематика</dt><dd>$80</dd><dt>Sponsored post, sensitive-ніша</dt><dd>$280</dd></dl><p class="note">Відповідь на мій лист, 21.11.2026.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://www.kickassfacts.com/frame-gen-actually-improves-latency-in-a-different-way/" rel="noopener nofollow" target="_blank">Frame Gen Actually Improves Latency in a Different Way</a> (липень 2025, dofollow на candy.ai з анкором «Candy AI»)</li>
+                  <li><a href="https://www.kickassfacts.com/best-high-volatility-crypto-casino-games-for-big-wins/" rel="noopener nofollow" target="_blank">Best High Volatility Crypto Casino Games for Big Wins</a> (гостьовий пост про криптоказино)</li>
+                </ul></div>
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof">
+                <a href="assets/replies/kickassfacts.jpg" target="_blank" rel="noopener"><img src="assets/replies/kickassfacts.jpg" alt="Відповідь KickassFacts: sponsored post $80 для загальної тематики, $280 для sensitive-ніші" loading="lazy" width="1340" height="385"></a>
+                <figcaption>Відповідь донора на мій лист, 21.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://kickassfacts.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <details class="donor" data-v="maybe" data-domain="tekedia.com" data-dr="63" data-traffic="28.2K" data-us="20%" data-budget="до $200">
+            <div class="donor-body">
+              <dl class="chips"><div class="dup"><dt>Органіка</dt><dd>28.2K/міс</dd></div><div class="dup"><dt>Частка США</dt><dd>20%</dd></div><div><dt>DR</dt><dd>63</dd></div><div><dt>Authority Score</dt><dd>37</dd></div><div><dt>Ref. domains</dt><dd>12.8K</dd></div><div><dt>Ніша</dt><dd>Tech &amp; Business News</dd></div></dl>
+              <div class="cols has-aside">
+                <div class="why"><h4>Чому</h4><p>За вагою домену tekedia виглядає добре: трафік росте, посилання dofollow і без позначки sponsored, це вони підтвердили в листі.</p>
+                <p>Зупиняє гео. Наш ринок США, а в tekedia на першому місці Індія, США лише друга, і майже стільки ж трафіку дає Нігерія.</p>
+                <p>Напряму вони просять $350 за будь-яку тематику, а на Collaborator з доплатою за особливу тематику виходить $448, тож для нашої ніші вигідніше домовлятися з редакцією. Вага домену від гео не залежить, але аудиторія не з нашого ринку робить посилання менш релевантним, тому моя стеля $200.</p></div>
+                <aside class="price-card"><h4>Ціни донора</h4><dl class="prices">
+                  <dt>Guest post</dt><dd>$350</dd>
+                  <dt>Link insertion</dt><dd>$350</dd>
+                  <dt>Пакетна ціна</dt><dd>на запит</dd>
+                </dl><p class="note">Відповідь на мій лист, 20.11.2026. Dofollow, індексується, назавжди, без sponsored. Оплата PayPal, BTC, ETH або USDT.</p>
+                <h4 class="pc-sub">Collaborator</h4><dl class="prices">
+                  <dt>Стаття</dt><dd>$299</dd>
+                  <dt>Особлива тематика</dt><dd>+$149</dd>
+                  <dt>Написання тексту</dt><dd>+$20</dd>
+                </dl><p class="note">Ціна з біржі Collaborator.</p></aside>
+              </div>
+              <div class="examples"><h4>Приклади постів у ніші</h4><ul class="evidence">
+                  <li><a href="https://www.tekedia.com/ai-companion-chatbots-with-memory/" rel="noopener nofollow" target="_blank">9 AI Companion Chatbots With Memory</a> (квітень 2026)</li>
+                  <li><a href="https://www.tekedia.com/nsfw-ai-image-generators-that-dont-hide-behind-fine-print/" rel="noopener nofollow" target="_blank">NSFW AI Image Generators That Don't Hide Behind Fine Print</a> (січень 2026, dofollow на mydreamcompanion.com)</li>
+                </ul></div>
+              <div class="proofs"><h4>Докази</h4><div class="proofs-row"><figure class="proof">
+                <a href="assets/replies/tekedia-geo.jpg" target="_blank" rel="noopener"><img width="515" height="500" src="assets/replies/tekedia-geo.jpg" alt="Semrush, tekedia.com: розподіл органічного трафіку за країнами — Індія 6.5K, США 5.5K, Нігерія 4.7K" loading="lazy" style="max-width:420px"></a>
+                <figcaption>Semrush, розподіл трафіку tekedia.com за країнами, 20.11.2026.</figcaption>
+              </figure><figure class="proof">
+                <a href="assets/replies/tekedia.jpg" target="_blank" rel="noopener"><img width="1400" height="385" src="assets/replies/tekedia.jpg" alt="Відповідь Tekedia: 350 USD за пост або link insertion, dofollow, без sponsored, будь-які теми, оплата PayPal або крипта" loading="lazy"></a>
+                <figcaption>Відповідь донора на мій лист, 20.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure><figure class="proof wide">
+                <a href="assets/replies/tekedia-collaborator.jpg" target="_blank" rel="noopener"><img width="2172" height="610" src="assets/replies/tekedia-collaborator.jpg" alt="Collaborator, tekedia.com: стаття 299 USD, особлива тематика +149 USD, написання +20 USD" loading="lazy"></a>
+                <figcaption>Collaborator, картка tekedia.com, 23.11.2026. Натисніть, щоб відкрити в повному розмірі.</figcaption>
+              </figure></div></div>
+              <p class="links"><a href="https://tekedia.com" rel="noopener nofollow" target="_blank">Відкрити сайт</a></p>
+            </div>
+          </details>
+          <div class="donors-empty" id="donors-empty" hidden>Немає сайтів з таким вердиктом.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 2. Guest posts ============ -->
+    <section class="task" id="guest-posts" data-sub="Підбір під dreamgirlai.chat" data-title="Площадки під гест-пости">
+      <div class="task-head">
+        <div>
+          <div class="task-num">Завдання 2</div>
+          <h2>Площадки під гест-пост для dreamgirlai.chat</h2>
+        </div>
+      </div>
+      <div class="brief">
+        <div class="brief-label">Умова</div>
+        <p>Знайти 5–10 сайтів, які ви вважаєте якісними та на яких, на вашу думку, було б реально запостити гест-пост для сайту <a href="https://dreamgirlai.chat/" rel="noopener nofollow" target="_blank">dreamgirlai.chat</a>.</p>
+      </div>
+      <div class="method">
+        <div class="brief-label">Як я шукав</div>
+        <p>Шукав через беклінки конкурентів. Аналізував їхні беклінки: дивився, які статті на них посилаються, з якими анкорами і на яких сайтах вони вийшли. Для кожного сайту перевіряв, що посилання dofollow, а в Semrush дивився AS, органіку в США і частку США від усієї органіки.</p>
+        <p>Для кожного сайту в таблиці є сторінка, де приймають пости (Write for Us, реклама або Contact), і приклади вже опублікованих постів.</p>
+      </div>
+      <div class="answer">
+        <div class="gp-wrap" style="margin-top:0">
+          <table class="gp-table"><colgroup><col class="c-site"><col class="c-num"><col class="c-num"><col class="c-org"><col class="c-num"><col class="c-why"><col class="c-proof"><col class="c-ex"></colgroup>
+            <thead><tr><th scope="col">Сайт</th><th scope="col" class="r">DR</th><th scope="col" class="r">AS</th><th scope="col" class="r">Органіка US</th><th scope="col" class="r">США, %</th><th scope="col">Чому підходить</th><th scope="col">Підтвердження</th><th scope="col">Приклади постів</th></tr></thead>
+            <tbody>
+              <tr><th scope="row"><a href="https://laweekly.com" rel="noopener nofollow" target="_blank">laweekly.com</a></th><td class="r">84</td><td class="r">56</td><td class="r">67.1K</td><td class="r">47</td><td>Лос-анджелеський міський тижневик про новини, їжу, музику, кіно й культуру, є окремий розділ Cannabis. Багато лістиклів і оглядів у нашій ніші, є навіть окремий огляд DreamGF. Гостьові пости на sensitive-теми теж публікують.</td><td>Статті позначені як від гостьових авторів (<code>/guest-author/</code>), а не від редакції. Контакт для розміщення: <a href="https://www.laweekly.com/contact-page/" rel="noopener nofollow" target="_blank">форма Advertising Inquiry</a> або publisher@laweekly.com.</td><td><ul><li><a href="https://www.laweekly.com/dreamgf-ai-review/" rel="noopener nofollow" target="_blank">DreamGF AI Review</a> (огляд конкурента)</li><li><a href="https://www.laweekly.com/bankroll-management-tips-for-casino-players/" rel="noopener nofollow" target="_blank">Bankroll Management Tips for Casino Players</a> (гест-пост про казино, 1 dofollow)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://brewminate.com" rel="noopener nofollow" target="_blank">brewminate.com</a></th><td class="r">64</td><td class="r">41</td><td class="r">31.9K</td><td class="r">60</td><td>Незалежний сайт про історію та ідеї: найбільша категорія History, також релігія, політика й поточні події. Бере гест-пости в різних нішах: казино, CBD, AI girlfriend. Є окрема стаття про AI girlfriend з dofollow-посиланням на конкурента, без позначки sponsored.</td><td>Розділ <a href="https://brewminate.com/category/sponsored-content/" rel="noopener nofollow" target="_blank">Sponsored Content</a>, де на сторінці прямо сказано paid collaborations. Гест-пости з посиланнями є і в звичайних розділах. Контакт: <a href="https://brewminate.com/contact-us/" rel="noopener nofollow" target="_blank">форма і email на Contact Us</a>.</td><td><ul><li><a href="https://brewminate.com/can-immersive-ai-have-a-positive-creative-impact/" rel="noopener nofollow" target="_blank">Can Immersive AI Have a Positive Creative Impact?</a> (грудень 2024, dofollow на nectar.ai з анкором «AI girlfriend»)</li><li><a href="https://brewminate.com/how-do-crypto-casino-welcome-packages-compare-across-platforms/" rel="noopener nofollow" target="_blank">How Do Crypto Casino Welcome Packages Compare Across Platforms?</a> (розділ Sponsored Content, 2026)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://www.urbansplatter.com" rel="noopener nofollow" target="_blank">urbansplatter.com</a></th><td class="r">61</td><td class="r">35</td><td class="r">14.2K</td><td class="r">63</td><td>Блог про нерухомість і дизайн з відкритим розділом Blog (Technology, Business, Entertainment та інші). Є стаття про AI girlfriend з двома dofollow-посиланнями на конкурента, без позначки sponsored.</td><td>На сторінці <a href="https://www.urbansplatter.com/contact/" rel="noopener nofollow" target="_blank">Contact</a> запрошують експертів публікувати гест-пости і прямо згадують SEO-вигоди. Контакт: contact@urbansplatter.com.</td><td><ul><li><a href="https://www.urbansplatter.com/2024/10/before-inspecting-the-blog-post-kindly-click-on-this-link/" rel="noopener nofollow" target="_blank">Before Inspecting the Blog Post Kindly Click on this Link</a> (жовтень 2024, dofollow на nectar.ai з анкорами «AI girlfriends» і «Nectar.AI»)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://www.psychreg.org" rel="noopener nofollow" target="_blank">psychreg.org</a></th><td class="r">74</td><td class="r">37</td><td class="r">3.5K</td><td class="r">38</td><td>Сайт про психологію і ментальне здоров'я з тегом Cyberpsychology. Є стаття про explicit-фото від AI girlfriend з двома dofollow-посиланнями на конкурента.</td><td>Сторінка <a href="https://www.psychreg.org/write-for-us/" rel="noopener nofollow" target="_blank">Write for Us</a>: беруть есе про психологію та ментальне здоров'я обсягом 500–1 000 слів, посилання на джерела дозволені. Пітчі на dennis@psychreg.org.</td><td><ul><li><a href="https://www.psychreg.org/asking-explicit-photos-ai-girlfriend/" rel="noopener nofollow" target="_blank">Asking Explicit Photos from AI Girlfriend</a> (листопад 2024, dofollow на nectar.ai з анкорами «AI girlfriend» і «Nectar AI»)</li><li><a href="https://www.psychreg.org/strategies-tips-successful-play-ice-online-casino-greece/" rel="noopener nofollow" target="_blank">Strategies and Tips for Successful Play at ICE Online Casino in Greece</a> (червень 2023, гест-пост про казино, 1 dofollow на icecasino-gr.com)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://livenewschat.eu" rel="noopener nofollow" target="_blank">livenewschat.eu</a></th><td class="r">71</td><td class="r">33</td><td class="r">3.4K</td><td class="r">71</td><td>Новинний сайт з окремим розділом AI. Є стаття про AI companion з dofollow-посиланнями на конкурента (nectar.ai), без позначки sponsored.</td><td>Сторінка <a href="https://livenewschat.eu/write-for-us-submit-your-article-to-us/" rel="noopener nofollow" target="_blank">Write for Us</a>: беруть оригінальні статті про новини та технології, аналітику та колонки. Пітчі на email редактора: markmasterson777@gmail.com.</td><td><ul><li><a href="https://livenewschat.eu/the-ultimate-ai-companion-how-nectar-ai-is-revolutionizing-the-way-we-connect/" rel="noopener nofollow" target="_blank">The Ultimate AI Companion: How Nectar AI Is Revolutionizing the Way We Connect</a> (січень 2025, dofollow на nectar.ai з анкорами «Nectar AI» і «AI companion»)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://pwinsider.com" rel="noopener nofollow" target="_blank">pwinsider.com</a></th><td class="r">59</td><td class="r">44</td><td class="r">25.2K</td><td class="r">53</td><td>Новини про реслінг з великою американською аудиторією. Поруч із новинами виходять матеріали про казино й NSFW AI roleplay. Є стаття про AI girlfriend з двома dofollow-посиланнями на конкурента (nectar.ai), без позначки sponsored.</td><td>Окремої сторінки для гест-постів немає. Підтвердження: комерційні пости про казино й AI adult регулярно виходять на сайті. Контакт: <a href="https://pwinsider.com/contact.php" rel="noopener nofollow" target="_blank">сторінка Contact</a>, email редакції daveschererpwi@gmail.com.</td><td><ul><li><a href="https://pwinsider.com/article/188134/are-ai-girlfriends-here-to-stay.html?p=1" rel="noopener nofollow" target="_blank">Are AI Girlfriends Here to Stay?</a> (вересень 2024, dofollow на nectar.ai з анкорами «AI girlfriend» і «Nectar AI», посилання активні станом на листопад 2026)</li><li><a href="https://www.pwinsider.com/article/190993/ai-roleplay-why-nsfwcharai-is-leading-the-way.html?p=1" rel="noopener nofollow" target="_blank">AI Roleplay: Why NSFWChar.ai is Leading the Way</a> (грудень 2024, пост про NSFW AI roleplay)</li></ul></td></tr>
+              <tr><th scope="row"><a href="https://thesource.com" rel="noopener nofollow" target="_blank">thesource.com</a></th><td class="r">76</td><td class="r">48</td><td class="r">29.6K</td><td class="r">56</td><td>Хіп-хоп журнал про музику, культуру й політику. Публікує матеріали про AI girlfriend і NSFW AI, а також рейтинги казино. Є стаття з трьома dofollow-посиланнями на конкурента (ourdream.ai), без позначки sponsored.</td><td>Сторінка <a href="https://thesource.com/advertisewiththesource/" rel="noopener nofollow" target="_blank">Advertise With Us</a> з формою (ім'я, email, сайт, повідомлення), ціни не вказані. Є категорія <a href="https://thesource.com/category/music/op-ed/" rel="noopener nofollow" target="_blank">OP-ED</a> з маркуванням Featured Guest Posts. Рекламний email: advertising@thenorthstargroup.biz.</td><td><ul><li><a href="https://thesource.com/2026/04/15/seedance/" rel="noopener nofollow" target="_blank">Seedance 2.0’s Public Launch: I Tested What the Filters Block, and What Slips Through</a> (квітень 2026, 3 dofollow на ourdream.ai з анкорами «NSFW content» і «Ourdream AI»)</li><li><a href="https://thesource.com/2026/01/28/lovescape/" rel="noopener nofollow" target="_blank">Lovescape: The AI Companion Platform Bringing Emotional Intelligence to AI Relationships</a> (січень 2026, dofollow на lovescape.com з анкором «digital companionship»)</li><li><a href="https://thesource.com/2026/06/23/best-mobile-casino-in-canada-the-2026-ranking/" rel="noopener nofollow" target="_blank">Best mobile casino in Canada: the 2026 ranking</a> (червень 2026, рейтинг казино)</li></ul></td></tr>
+            
+              
+              
+              
+              
+              
+              
+            </tbody>
+          </table>
+        </div>
+        <p class="gp-note">AS, органіка і частка США з Semrush, DR з безкоштовного Ahrefs Website Authority Checker, листопад 2026.</p>
+      </div>
+    </section>
+
+    <!-- ============ 3. Crowd plan ============ -->
+    <section class="task" id="crowd" data-sub="Анкори і сторінки" data-title="Crowd-план">
+      <div class="task-head">
+        <div>
+          <div class="task-num">Завдання 3</div>
+          <h2>Розподіл анкорів і посилань у crowd-плані</h2>
+        </div>
+      </div>
+      <div class="brief">
+        <div class="brief-label">Умова</div>
+        <p>Опишіть, яким би був ваш підхід до розподілу анкорів та лінків при створенні crowd linkbuilding плану на щойно створений сайт, який має 10 сторінок.</p>
+      </div>
+      <div class="method">
+        <div class="brief-label">Мій підхід</div>
+        <p>Приклад на s-pro.io (розробка ПЗ для банків і фінтеху). Беру реальний сайт як приклад структури й уявляю, що він щойно запущений. Рахую 40 крауд-посилань за 8 тижнів.</p>
+        <p><b>1. Типи анкорів.</b> Для нового профілю більшість посилань роблю на бренд і голий URL: 40% бренд, 30% URL, 25% тематичні, 5% exact. Це робоча схема, у джерелах діапазони різняться.</p>
+        <p><b>2. Сторінки.</b> Беру головну і 9 сервісних сторінок. Блог, кейси, about і команду в крауд не беру, бо вони не продають послугу. Головна отримує 40%, решта 60% ділиться за попитом: більше /fintech і /ai-agent-development, менше вузьким сторінкам на кшталт KYC.</p>
+        <p><b>3. Анкори і темп.</b> На кожну сторінку 2–3 анкори, чергую їх. Обсяги перевіряю в Semrush: у «fintech software development company» 1,9 тис. пошуків на місяць, а у «AI governance for banks» лише 20, тож він йде запасним. Темп близько 20 посилань на місяць, бо для нового профілю радять 10–30. Майданчики підбираю під готовий план.</p>
+        
+      </div>
+      <div class="answer">
+        <h3>1. Розподіл за типами анкорів</h3>
+        <div class="cr-wrap"><table class="cr-table">
+          <thead><tr><th scope="col">Тип анкора</th><th scope="col" class="r">Частка</th><th scope="col">Приклади</th><th scope="col">На які сторінки ведуть</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Брендові</th><td class="r">40%</td><td>S-PRO, S-PRO.io</td><td class="soft">Переважно на головну. Це основа профілю.</td></tr>
+            <tr><th scope="row">Голий URL</th><td class="r">30%</td><td>s-pro.io, https://s-pro.io/fintech</td><td class="soft">На будь-яку сторінку. Основний варіант для профілів, де анкор зазвичай не поставиш.</td></tr>
+            <tr><th scope="row">Тематичні (partial)</th><td class="r">25%</td><td>fintech development, AI agent development, banking platform</td><td class="soft">Не на головну, а на сторінки окремих послуг, наприклад /fintech. Текст беру з таблиці нижче.</td></tr>
+            <tr><th scope="row">Exact match</th><td class="r">5%</td><td>fintech software development company, legacy system modernization</td><td class="soft">Тільки на сторінку, яка саме під цей запит, не на головну. Не більше одного на майданчик.</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>2. Розподіл за сторінками</h3>
+        <div class="cr-wrap"><table class="cr-table">
+          <thead><tr><th scope="col">Сторінка</th><th scope="col" class="r">Частка</th><th scope="col">Анкори на вибір</th></tr></thead>
+          <tbody>
+            <tr><th scope="row"><a href="https://s-pro.io/" rel="noopener nofollow" target="_blank">Головна</a></th><td class="r">40%</td><td>S-PRO, s-pro.io</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/fintech" rel="noopener nofollow" target="_blank">/fintech</a></th><td class="r">10%</td><td>fintech software development company, financial software development, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/ai-agent-development" rel="noopener nofollow" target="_blank">/ai-agent-development</a></th><td class="r">10%</td><td>AI agent development company, custom AI agent development, AI agents for banks, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/core-legacy-modernization" rel="noopener nofollow" target="_blank">/core-legacy-modernization</a></th><td class="r">8%</td><td>legacy system modernization, core banking modernization, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/digital-banking" rel="noopener nofollow" target="_blank">/digital-banking</a></th><td class="r">8%</td><td>digital banking platform, mobile banking platform, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/ai-agents-aml-transaction-monitoring-bank" rel="noopener nofollow" target="_blank">/ai-agents-aml-transaction-monitoring-bank</a></th><td class="r">7%</td><td>AML transaction monitoring, AML compliance automation, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/ai-process-automation" rel="noopener nofollow" target="_blank">/ai-process-automation</a></th><td class="r">6%</td><td>AI process automation, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/eu-ai-act-compliant-ai-agents-banks" rel="noopener nofollow" target="_blank">/eu-ai-act-compliant-ai-agents-banks</a></th><td class="r">5%</td><td>EU AI Act compliance, AI governance for banks, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/ai-copilots-for-wealth-management-teams" rel="noopener nofollow" target="_blank">/ai-copilots-for-wealth-management-teams</a></th><td class="r">3%</td><td>wealth management AI, URL сторінки</td></tr>
+            <tr><th scope="row"><a href="https://s-pro.io/kyc-onboarding-ai-agents-for-banks" rel="noopener nofollow" target="_blank">/kyc-onboarding-ai-agents-for-banks</a></th><td class="r">3%</td><td>AI KYC, KYC onboarding automation, URL сторінки</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>3. Темп і етапи</h3>
+        <div class="cr-wrap"><table class="cr-table">
+          <thead><tr><th scope="col">Етап</th><th scope="col" class="r">Лінків</th><th scope="col">Що ставлю</th></tr></thead>
+          <tbody>
+            <tr><th scope="row">Тижні 1 і 2</th><td class="r">8</td><td>Тільки головна: бренд і голий URL. Комерційних анкорів немає.</td></tr>
+            <tr><th scope="row">Тижні 3 до 5</th><td class="r">16</td><td>Додаю внутрішні сторінки: голі URL і тематичні анкори.</td></tr>
+            <tr><th scope="row">Тижні 6 до 8</th><td class="r">16</td><td>Решта внутрішніх сторінок і 2 exact match. Перед цим етапом дивлюся, які лінки проіндексувались.</td></tr>
+          </tbody>
+        </table></div>
+
+        <h3>4. Правила, яких я тримаюсь</h3>
+        <ul class="cr-list">
+          <li>План складаю наперед: для кожного посилання визначено сторінку і анкор. Майданчики підбираю під план, а не навпаки.</li>
+          <li>Типи майданчиків змішую: профілі, сабміти текстів, Web 2.0, форуми, рідше коментарі в блогах. Обираю їх за якістю, а не за тематикою: високий DR, живий трафік, посилання індексується і не видаляється. Доречним посилання робить текст поста чи профілю.</li>
+          <li>Один майданчик, одне посилання на сайт.</li>
+          <li>На кожну сторінку 2–3 варіанти анкора, і чергую їх у межах цієї сторінки. У профілях анкор часто не поставиш, тому там йде безанкорне посилання, тобто голий URL.</li>
+          <li>Не женуся за dofollow: у крауді багато nofollow, і це нормально.</li>
+          <li>Веду таблицю: сторінка, майданчик, анкор, тип майданчика, DR, трафік, URL розміщення, статус (розміщено, на модерації, видалено) і чи проіндексовано. Видалені та непроіндексовані замінюю в наступному етапі.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ============ 4. Outreach ============ -->
+    <section class="task" id="outreach" data-sub="Лист вебмайстру" data-title="Аутріч-лист">
+      <div class="task-head">
+        <div>
+          <div class="task-num">Завдання 4</div>
+          <h2>Приклад аутріч-листа вебмайстру</h2>
+        </div>
+      </div>
+      <div class="brief">
+        <div class="brief-label">Умова</div>
+        <p>Надати один приклад аутріч-листа до вебмайстрів, який ви зазвичай використовуєте.</p>
+      </div>
+      <div class="method">
+        <div class="brief-label">Як я пишу</div>
+        <p>Цей лист я надсилав донорам із завдання 1. Він короткий: хто пише, чого хочу і що мені потрібно знати у відповідь. Одразу пропоную два формати, щоб власник сайту вибрав той, який у нього вже є, і не перепитував.</p>
+        <p>Ціну, тип посилання (dofollow чи nofollow) і спосіб оплати питаю вже в першому листі, бо без цього не порахувати, чи вкладається сайт у бюджет. Назву проєкту і посилання на нього в першому листі не даю.</p>
+        <p>Тематику в першому листі іноді краще не вказувати. Якщо сайт мовчить після листа з тематикою, незрозуміло, чому: його не влаштовує ніша чи він узагалі не розміщує гостьові пости. Без ніші той самий сайт часто відповідає, що гостьові пости розміщує, і відмовляє вже після того, як я назвав нішу. Тоді в базі видно справжню причину відмови, і залишається простір домовитися. А коли ніша є в першому листі, відмови часто немає взагалі, сайт просто ігнорує, і не зрозуміло, чи це через тематику.</p>
+      </div>
+      <div class="answer">
+        <div class="letter">
+          <div class="letter-head">
+            <dl class="letter-meta"><dt>Кому</dt><dd>контакт сайту зі сторінки advertise / write for us</dd><dt>Тема</dt><dd class="subj">Guest post &amp; link collaboration</dd></dl>
+            <button class="btn" type="button" data-copy="#letter-text">Копіювати</button>
+          </div>
+          <div class="letter-body" id="letter-text"><p>Hi [Site] team,</p><p>I represent a website in the AI companion space (an AI chat app for adults), and I'm looking for blogs to collaborate with.</p><p>Would any of these formats work for you:</p><ul><li>A guest post or sponsored article on your blog</li><li>A link insertion (niche edit) into an existing article</li></ul><p>If any of these options work, could you share your terms: rates and link type (dofollow/nofollow)? Also, which payment method is more convenient for you, PayPal or crypto?</p><p>Let me know what works for you.</p><p class="letter-sign">Best regards,<br>Pavlo</p></div>
+        </div>
+        <h3 style="margin:36px 0 14px">Фоллоуап</h3>
+        <div class="letter">
+          <div class="letter-head">
+            <dl class="letter-meta"><dt>Кому</dt><dd>той самий контакт</dd><dt>Тема</dt><dd class="subj">Re: Guest post &amp; link collaboration</dd></dl>
+            <button class="btn" type="button" data-copy="#followup-text">Копіювати</button>
+          </div>
+          <div class="letter-body" id="followup-text"><p>Hi there,</p><p>Just following up on my last message — I know inboxes pile up.</p><p>If a guest post or link insertion could work on your side, I'd be glad to hear your terms: rates, link type (dofollow/nofollow) and whether PayPal or crypto works better for you.</p><p>And if it's not a fit, no worries — just let me know either way.</p><p class="letter-sign">Best regards,<br>Pavlo</p></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<footer>
+  <div class="in">
+    <span>Павло Горін · тестове завдання для CordyTraff</span>
+  </div>
+</footer>
+
+<div class="toast" role="status" aria-live="polite" id="toast"></div>
+
+<script>
+(() => {
+  const VERDICT = { take: "Беру", maybe: "Під питанням", skip: "Не беру", pending: "—" };
+  const chev = '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+  const sections = [...document.querySelectorAll("section.task")];
+
+  /* hero quick-nav and TOC are generated from the sections */
+  const toc = document.getElementById("toc-list");
+  sections.forEach((s, i) => {
+    toc.insertAdjacentHTML("beforeend",
+      `<li><a href="#${s.id}"><span class="n">${i + 1}</span><span>${s.dataset.title}</span></a></li>`);
+  });
+
+  /* donor rows: summary is generated from data attributes, body is authored inside <details> */
+  const donors = [...document.querySelectorAll(".donor")];
+  donors.forEach((d, i) => {
+    const v = d.dataset.v || "pending";
+    const n = `<span class="i">${String(i + 1).padStart(2, "0")}</span>`;
+    const body = d.innerHTML.trim();
+    if (!body) {
+      /* not analysed yet: a quiet row that does not pretend to open */
+      const row = document.createElement("div");
+      row.className = "donor donor-empty"; row.dataset.v = "pending";
+      row.innerHTML = `<div class="row">${n}<span class="dom">${d.dataset.domain}</span></div>`;
+      d.replaceWith(row); donors[i] = row;
+      return;
+    }
+    const budget = d.dataset.budget && d.dataset.budget !== "—" ? d.dataset.budget : "";
+    d.innerHTML =
+      `<summary>${n}<span class="dom">${d.dataset.domain}</span>` +
+      `<span class="verdict" data-v="${v}">${VERDICT[v]}</span>` +
+      `<span class="num">${d.dataset.dr || "—"}</span>` +
+      `<span class="num">${d.dataset.traffic ? d.dataset.traffic + "/міс" : "—"}</span>` +
+      `<span class="num">${d.dataset.us || "—"}</span>` +
+      `<span class="budget${budget ? "" : " none"}">${budget || "—"}</span><span class="more"><span class="more-o">Детальніше</span><span class="more-c">Згорнути</span>${chev}</span></summary>` + body;
+  });
+
+
+  /* first analysed donor is open on load, so the reviewer sees what a row hides */
+  const firstReal = donors.find(d => d.tagName === "DETAILS");
+  if (firstReal) firstReal.open = true;
+
+  /* expand / collapse all */
+  const expandAll = document.getElementById("expand-all");
+  const realDonors = () => donors.filter(d => d.tagName === "DETAILS" && !d.hidden);
+  const syncExpand = () => {
+    const all = realDonors().length && realDonors().every(d => d.open);
+    expandAll.textContent = all ? "Згорнути всі" : "Розгорнути всі";
+    expandAll.setAttribute("aria-pressed", all);
+  };
+  expandAll.addEventListener("click", () => {
+    const open = !realDonors().every(d => d.open);
+    realDonors().forEach(d => d.open = open);
+    syncExpand();
+  });
+  donors.forEach(d => d.tagName === "DETAILS" && d.addEventListener("toggle", syncExpand));
+  syncExpand();
+
+  /* filters only appear once at least one verdict exists */
+  const filters = document.getElementById("filters");
+  const counts = { all: donors.length, take: 0, maybe: 0, skip: 0 };
+  donors.forEach(d => { if (counts[d.dataset.v] !== undefined) counts[d.dataset.v]++; });
+  if (counts.take + counts.maybe + counts.skip > 0) {
+    filters.hidden = false;
+    filters.querySelectorAll("button").forEach(b => b.querySelector(".c").textContent = counts[b.dataset.f]);
+    filters.addEventListener("click", e => {
+      const b = e.target.closest("button"); if (!b) return;
+      filters.querySelectorAll("button").forEach(x => x.setAttribute("aria-pressed", x === b));
+      let shown = 0;
+      donors.forEach(d => { const ok = b.dataset.f === "all" || d.dataset.v === b.dataset.f; d.hidden = !ok; if (ok) shown++; });
+      document.getElementById("donors-empty").hidden = shown > 0;
+    });
+  }
+
+  /* scrollspy with a sliding indicator */
+  const links = [...toc.querySelectorAll("a")];
+  const ind = document.querySelector(".toc-ind");
+  toc.appendChild(ind); /* positioned inside the list so offsets line up */
+  const setActive = id => {
+    links.forEach(a => {
+      const on = a.getAttribute("href") === "#" + id;
+      a.setAttribute("aria-current", on);
+      if (on) {
+        ind.style.height = a.offsetHeight + "px";
+        ind.style.transform = `translateY(${a.offsetTop}px)`;
+        if (getComputedStyle(ind).display === "none") a.scrollIntoView({ block: "nearest", inline: "center" });
+      }
+    });
+  };
+  const io = new IntersectionObserver(entries => {
+    const vis = entries.filter(e => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+    if (vis[0]) setActive(vis[0].target.id);
+  }, { rootMargin: "-20% 0px -65% 0px" });
+  sections.forEach(s => io.observe(s));
+  setActive(sections[0].id);
+
+  /* nav jumps: instant, and re-aimed once images and details have settled the layout */
+  const jump = id => {
+    const el = document.getElementById(id); if (!el) return;
+    const off = parseInt(getComputedStyle(document.documentElement).scrollPaddingTop, 10) || 0;
+    const go = () => window.scrollTo({ top: Math.max(0, el.getBoundingClientRect().top + window.scrollY - off), behavior: "instant" });
+    go(); setTimeout(go, 300); setTimeout(go, 800);
+  };
+  document.addEventListener("click", e => {
+    const a = e.target.closest('a[href^="#"]'); if (!a) return;
+    const id = a.getAttribute("href").slice(1);
+    if (!id || !document.getElementById(id)) return;
+    e.preventDefault();
+    try { history.replaceState(null, "", "#" + id); } catch (err) {}
+    jump(id);
+  });
+
+  /* copy buttons (outreach letter) */
+  const toast = document.getElementById("toast");
+  const say = msg => { toast.textContent = msg; toast.classList.add("show"); clearTimeout(say.t); say.t = setTimeout(() => toast.classList.remove("show"), 1800); };
+  document.addEventListener("click", async e => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    const el = document.querySelector(b.dataset.copy);
+    try { await navigator.clipboard.writeText(el.innerText); say("Скопійовано"); }
+    catch { say("Не вдалося скопіювати, виділіть текст вручну"); }
+  });
+})();
+</script>
+</body>
+</html>
